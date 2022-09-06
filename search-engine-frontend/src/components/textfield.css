@@ -1,0 +1,16 @@
+.inputbox {
+    margin-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    height: 30px;
+    font-size: larger;
+}
+
+.button {
+    height: 35px;
+    border-color: black;
+}
