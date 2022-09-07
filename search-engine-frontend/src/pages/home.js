@@ -20,13 +20,14 @@ const Home = () => {
                     'Authorization': 'Client-ID NL9vHYq0hhlL5CA7KxePs4h0z7y_uZkPNMwH-zlq-Q8'
                 },
                 params: {
-                    query: imageText1
+                    query: imageText1,
+                    per_page: 30
                 }
             })
                 .then((response) => {
                     const imageList = []
                     response.data.results.map((image) => {
-                        imageList.push(image.urls.thumb)
+                        imageList.push(image.urls.full)
                     })
                     setImagesList(imageList)
                 })
@@ -42,9 +43,14 @@ const Home = () => {
 
     const displayImages = imagesList.map((image, index) => {
         return (
-            <Grid item xs={12} sm={4}>
-                <li key={index}><img src={image} /></li>
-            </Grid>
+            <div className="card" key={index}>
+                <img
+                    className="card--image"
+                    src={image}
+                    width="50%"
+                    height="50%"
+                ></img>
+            </div>
         )
     })
 
@@ -58,9 +64,9 @@ const Home = () => {
                 setApi={setApi}
             />
             {buttonClick && handleChange()}
-            <Grid container spacing={3} style={{ marginTop: '10px' }}>
+            <div className="card-list">
                 {imagesList.length > 0 ? displayImages : null}
-            </Grid>
+            </div>
         </>
     );
 }

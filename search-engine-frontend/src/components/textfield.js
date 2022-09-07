@@ -1,18 +1,38 @@
 import { React, useState, useEffect } from 'react'
-import './textfield.css'
 
 const BasicTextFields = (props) => {
 
     const { searchText, updateSearchText, setbuttonClick, setApi } = props
 
+    const handleChange = (e) => {
+        e.preventDefault()
+        updateSearchText(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setbuttonClick(true)
+    }
+
     return (
         <>
-            <h1>T1 input field</h1>
-            <div className='inputbox'>
-                <input className='input' id="outlined-basic" label="Image Text" variant="outlined" value={searchText}
-                    onChange={(e) => updateSearchText(e.target.value)} />
-                <button className='button' onClick={() => setbuttonClick(true)}>search</button>
-            </div>
+            <form className="form" onSubmit={handleSubmit}>
+                <label className="label" htmlFor="query">
+                    {" "}
+                    📷
+                </label>
+                <input
+                    type="text"
+                    name="query"
+                    className="input"
+                    placeholder={`Try "dog" or "apple"`}
+                    value={searchText}
+                    onChange={handleChange}
+                />
+                <button type="submit" className="button">
+                    Search
+                </button>
+            </form>
         </>
     );
 }

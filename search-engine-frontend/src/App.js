@@ -1,10 +1,13 @@
 import Home from './pages/home';
+import './App.css'
 
-function App() {
+const App = () => {
   return (
-    <div className="search-engine">
-      <h1>Hi, Welcome to image search engine</h1>
-      <Home />
+    <div className="App">
+      <div className="container">
+        <h1 className='title'>Hi, Welcome to image search engine</h1>
+        <Home />
+      </div>
     </div>
   );
 }
