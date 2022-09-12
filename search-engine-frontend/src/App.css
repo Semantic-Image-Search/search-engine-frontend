@@ -28,6 +28,7 @@
 
 .form {
   display: grid;
+  margin-bottom: 10px;
 }
 
 .input {
@@ -37,6 +38,7 @@
   border-radius: 20px;
   background-color: white;
   margin-bottom: 1rem;
+  width: 100%
 }
 
 .button {
@@ -54,6 +56,21 @@
   background-color: rgba(0, 0, 0, 0.85);
 }
 
+.button2 {
+  background-color: white;
+  color: black;
+  padding: 1rem 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 20px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background-color 250ms;
+}
+
+.button2:hover {
+  background-color: grey;
+}
+
 .card {
   margin-bottom: 1rem;
   display: flex;
@@ -65,8 +82,15 @@
   border-radius: 10px;
 }
 
-.card-list {
+.card-list-noblur {
+  position: relative;
   column-count: 3;
+}
+
+.card-list-blur {
+  position: relative;
+  column-count: 3;
+  filter: blur(8px);
 }
 
 @media (min-width: 768px) {
@@ -85,4 +109,10 @@
   .card-list {
     column-count: 1;
   }
+}
+
+.loader {
+  position: absolute;
+  left:50%;
+  top:50%;
 }

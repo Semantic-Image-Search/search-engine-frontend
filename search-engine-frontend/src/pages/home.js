@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import BasicTextFields from "../components/textfield";
+import Loader from '../components/loader';
 import axios from 'axios'
-import Grid from '@mui/material/Grid'
 
 const Home = () => {
 
@@ -9,8 +9,11 @@ const Home = () => {
     const [buttonClick, setbuttonClick] = useState(false)
     const [api, setApi] = useState(0)
     const [imagesList, setImagesList] = useState([])
-
-    // console.log(buttonClick, imagesList)
+    const [desc, setDesc] = useState('')
+    const [descApi, setDescApi] = useState(0)
+    const [filteredImage, setFilteredImage] = useState([])
+    const [loader, setLoader] = useState(false)
+    const [blur, setBlur] = useState('noblur')
 
     useEffect(() => {
 
@@ -36,6 +39,25 @@ const Home = () => {
 
     }, [api])
 
+    useEffect(() => {
+
+        if (descApi > 0 && imagesList.length > 0) {
+            axios.post('http://127.0.0.1:8020/sim_search', {
+                search: desc,
+                imgs: imagesList
+            })
+                .then((response) => {
+                    setFilteredImage(response.data.data)
+                    setImagesList([])
+                    setLoader(val => !val)
+                    setBlur('noblur')
+                })
+                .catch((error) => console.log(error))
+        }
+
+    }, [descApi])
+
+
     const handleChange = () => {
         setApi(c => c + 1)
         setbuttonClick(false)
@@ -54,9 +76,33 @@ const Home = () => {
         )
     })
 
+    const displayFilteredImage = filteredImage.map((image, index) => {
+        return (
+            <div className="card" key={index}>
+                <img
+                    className="card--image"
+                    src={image}
+                    width="50%"
+                    height="50%"
+                ></img>
+            </div>
+        )
+    })
+
+    const handleDescChange = (e) => {
+        e.preventDefault()
+        setDesc(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setDescApi(c => c + 1)
+        setLoader(val => !val)
+        setBlur('blur')
+    }
+
     return (
         <>
-
             <BasicTextFields
                 searchText={imageText1}
                 updateSearchText={setImageText1}
@@ -64,9 +110,31 @@ const Home = () => {
                 setApi={setApi}
             />
             {buttonClick && handleChange()}
-            <div className="card-list">
+            {imagesList.length > 0 || filteredImage.length > 0 ?
+                <form className="form" onSubmit={handleSubmit}>
+                    <label className="label" htmlFor="query">
+                        {" "}
+                        🖊️
+                    </label>
+                    <input
+                        type="text"
+                        name="query"
+                        className="input"
+                        placeholder={`Add description`}
+                        value={desc}
+                        onChange={handleDescChange}
+                    />
+                    <button type="submit" className="button2">
+                        Search
+                    </button>
+                </form>
+                : null
+            }
+            <div className={`card-list-${blur}`}>
                 {imagesList.length > 0 ? displayImages : null}
+                {filteredImage.length > 0 ? displayFilteredImage : null}
             </div>
+            {loader && <Loader />}
         </>
     );
 }
